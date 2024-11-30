@@ -2,17 +2,10 @@
   "name": "optimized-svg-figma-plugin",
   "id": "1444678798040679004",
   "api": "1.0.0",
-  "main": "code.js",
-  "capabilities": [],
-  "enableProposedApi": false,
-  "documentAccess": "dynamic-page",
-  "editorType": [
-    "figma"
-  ],
+  "main": "dist/code.js",
   "ui": "ui.html",
-  "networkAccess": {
-    "allowedDomains": [
-      "none"
-    ]
-  }
+  "editorType": [
+    "figma",
+    "figjam"
+  ]
 }
