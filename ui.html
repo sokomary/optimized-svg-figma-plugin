@@ -1,0 +1,20 @@
+<h2>SVG optimizer</h2>
+<button id="download">Download</button>
+<button id="cancel">Cancel</button>
+<script>
+
+    document.getElementById('download').onclick = () => {
+        parent.postMessage({ pluginMessage: { type: 'download', path: './assets/icons' } }, '*')
+    }
+
+    document.getElementById('cancel').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+    }
+
+    window.onmessage = async (event) => {
+        const message = event.data.pluginMessage;
+        if (message.type === "selectedElement") {
+            console.log('Got selection: ', message.selection);
+        }
+    };
+</script>
