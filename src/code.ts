@@ -1,3 +1,5 @@
+import { optimize } from "svgo/dist/svgo.browser.js";
+
 figma.showUI(__html__);
 
 figma.ui.onmessage = (message: { path: string }) => {
@@ -12,7 +14,7 @@ async function getSvgString(node: BaseNode) {
   try {
     if ('exportAsync' in node) {
       const svgData = await node.exportAsync({ format: 'SVG' });
-      const svgString =  String.fromCharCode(...svgData);
+      const svgString = String.fromCharCode(...Array.from(svgData));
       return svgString;
     } else {
       throw new Error('This node type does not support export.');
@@ -38,7 +40,8 @@ const onSelection = async () => {
     if (component) {
       getSvgString(component).then((svgString) => {
         if (svgString) {
-          console.log('Svg: ', svgString);
+          const result = optimize(svgString);
+          console.log(result);
         }
       });
     }
