@@ -1,12 +1,12 @@
-<div style="padding: 0 10px">
-    <h2>SVG optimizer</h2>
-    <div style="display: flex; flex-direction: column; gap: 20px">
-        <div id="note">Select some SVG elements to start</div>
-        <div id="items"></div>
-        <div style="display: flex; justify-content: space-between;">
+<div style="height: 100%;">
+    <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+        <div style="display: flex; flex-direction: column; gap: 10px; height: 100%;">
+            <h3 id="header">Select some SVG elements to start</h3>
+            <div id="items"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; width: 100%;">
             <button id="download" style="width: fit-content; display: none">Download</button>
-            <input id="dir" type="file" webkitdirectory directory>
-            <button id="cancel" style="width: fit-content">Cancel</button>
+            <button id="cancel" style="width: fit-content; margin-right: 0; margin-left: auto">Cancel</button>
         </div>
     </div>
 </div>
@@ -24,9 +24,12 @@
         const message = event.data.pluginMessage;
 
         if (message.type === 'selection-changed') {
-            document.getElementById('note').innerHTML = message.elements.length === 0 ? 'Select some SVG elements to start' : '';
+            document.getElementById('header').innerHTML = message.elements.length === 0 ? 'Select some SVG elements to start' : 'Selected SVGs:';
             document.getElementById('download').style['display'] = message.elements.length === 0 ? 'none' : 'unset';
-            document.getElementById('items').innerHTML = message.elements.map((element) => `<div>${element.name} (${element.change})</div>`).join('');
+
+                document.getElementById('items').innerHTML =
+                    message.elements.map((element) => `<div>${element.name} (${element.change})</div>`)
+                .join('');
         }
 
         if (message.type === 'download-zip') {

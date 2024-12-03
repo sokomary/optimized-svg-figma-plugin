@@ -1,5 +1,5 @@
 {
-  "name": "optimized-svg-figma-plugin",
+  "name": "SVG optimizer",
   "id": "1444678798040679004",
   "api": "1.0.0",
   "main": "dist/code.js",
