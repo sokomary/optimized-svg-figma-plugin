@@ -1,57 +1,58 @@
 import { optimize } from "svgo/dist/svgo.browser.js";
+import { PLUGINS } from "./config";
+import { buildZipBase64, formatStringSize, getSvgString } from "./helpers";
 
-figma.showUI(__html__);
+type Element = { name: string; data: string; change: string }
 
-figma.ui.onmessage = (message: { path: string }) => {
-  console.log('Download path: ', message.path);
+let ELEMENTS: Element[] = [];
 
-  // Make sure to close the plugin when you're done. Otherwise the plugin will
-  // keep running, which shows the cancel button at the bottom of the screen.
-  // figma.closePlugin();
+figma.showUI(__html__, { width: 500 });
+
+figma.ui.onmessage = async (message: { type: string }) => {
+  if (message.type === 'cancel') {
+    figma.closePlugin();
+  }
+
+  if (message.type === "download-svgs") {
+    figma.notify("SVG downloads initiated");
+
+    const zipBase64 = await buildZipBase64(ELEMENTS);
+    if (zipBase64) {
+      figma.ui.postMessage({
+        type: 'download-zip',
+        zipBase64,
+      });
+    }
+  }
 };
 
-async function getSvgString(node: BaseNode) {
-  try {
-    if ('exportAsync' in node) {
-      const svgData = await node.exportAsync({ format: 'SVG' });
-      const svgString = String.fromCharCode(...Array.from(svgData));
-      return svgString;
-    } else {
-      throw new Error('This node type does not support export.');
-    }
-  } catch (error) {
-    console.error('Error exporting SVG:', error);
-    return null;
-  }
-}
+const plugins = PLUGINS.filter(p => p.enabledByDefault).map((plugin) => ({
+  name: plugin.id,
+}));
 
 const onSelection = async () => {
   const selection = figma.currentPage.selection;
 
-  if (!selection) {
-    figma.notify('Select frame or group', {
-      timeout: 5000,
-    });
-    return;
-  }
-
+  const elements: Element[] = [];
   for (const node of selection) {
     const component = await figma.getNodeByIdAsync(node.id);
     if (component) {
-      getSvgString(component).then((svgString) => {
+      await getSvgString(component).then((svgString) => {
         if (svgString) {
-          const result = optimize(svgString);
-          console.log(result);
+          const result = optimize(svgString, { plugins, multipass: true });
+          elements.push({ name: component.name, data: result.data, change: `${formatStringSize(svgString)} -> ${formatStringSize(result.data)}` });
         }
       });
     }
   }
 
+  ELEMENTS = [];
+  elements.forEach((el) => ELEMENTS.push(el));
 
-  figma.ui.postMessage({ type: 'selectedElement', selection: selection});
-
+  figma.ui.postMessage({ type: 'selection-changed', elements });
 }
 
 figma.on('selectionchange', onSelection);
+
 
 

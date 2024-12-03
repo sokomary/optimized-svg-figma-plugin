@@ -1,0 +1,1 @@
+export const ONE_KBITE_IN_BITES = 1024;

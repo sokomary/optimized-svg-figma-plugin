@@ -1,20 +1,43 @@
-<h2>SVG optimizer</h2>
-<button id="download">Download</button>
-<button id="cancel">Cancel</button>
-<script>
+<div style="padding: 0 10px">
+    <h2>SVG optimizer</h2>
+    <div style="display: flex; flex-direction: column; gap: 20px">
+        <div id="note">Select some SVG elements to start</div>
+        <div id="items"></div>
+        <div style="display: flex; justify-content: space-between;">
+            <button id="download" style="width: fit-content; display: none">Download</button>
+            <input id="dir" type="file" webkitdirectory directory>
+            <button id="cancel" style="width: fit-content">Cancel</button>
+        </div>
+    </div>
+</div>
 
+<script>
     document.getElementById('download').onclick = () => {
-        parent.postMessage({ pluginMessage: { type: 'download', path: './assets/icons' } }, '*')
+        parent.postMessage({ pluginMessage: { type: 'download-svgs' } }, '*')
     }
 
     document.getElementById('cancel').onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+        parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
     }
 
     window.onmessage = async (event) => {
         const message = event.data.pluginMessage;
-        if (message.type === "selectedElement") {
-            console.log('Got selection: ', message.selection);
+
+        if (message.type === 'selection-changed') {
+            document.getElementById('note').innerHTML = message.elements.length === 0 ? 'Select some SVG elements to start' : '';
+            document.getElementById('download').style['display'] = message.elements.length === 0 ? 'none' : 'unset';
+            document.getElementById('items').innerHTML = message.elements.map((element) => `<div>${element.name} (${element.change})</div>`).join('');
+        }
+
+        if (message.type === 'download-zip') {
+            const zipData = message.zipBase64;
+            const dataUrl = `data:application/zip;base64,${zipData}`;
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'icons.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     };
 </script>
