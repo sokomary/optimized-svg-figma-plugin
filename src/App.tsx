@@ -1,43 +1,37 @@
 import React from 'react';
 import { useLogic } from './App.useLogic';
+import { EmptyState, WaitingState, ElementsList, Header } from './components';
 import * as css from './App.css';
 
 function App() {
-  const { elements, download } = useLogic();
+  const { elements, download, state } = useLogic();
+
+  const renderContent = () => {
+    switch (state) {
+      case 'not-empty': {
+        return (
+          <>
+            <Header
+              elementsSelected={elements.length > 0}
+              onDownload={download}
+            />
+            <ElementsList elements={elements} />
+          </>
+        );
+      }
+      case 'empty': {
+        return <EmptyState />;
+      }
+      case 'downloading':
+      case 'optimisation': {
+        return <WaitingState state={state} />;
+      }
+    }
+  };
 
   return (
     <div className={css.container}>
-      <div className={css.content}>
-        {elements.length === 0 ? (
-          <div className={css.emptyState}>
-            <div>No elements selected</div>
-            <div className={css.emptyNote}>
-              Please, select some SVG elements to start optimization
-            </div>
-          </div>
-        ) : (
-          <div className={css.title}>
-            <div>Selected SVGs:</div>
-            <div className={css.actions}>
-              {elements.length > 0 && (
-                <button
-                  onClick={download}
-                  className={css.button({ kind: 'primary' })}
-                >
-                  Download all as ZIP
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {elements.map((element, index) => (
-          <div key={index} className={css.element}>
-            <div>{element.name} </div>
-            <div className={css.note}>{element.change}</div>
-          </div>
-        ))}
-      </div>
+      <div className={css.content}>{renderContent()}</div>
     </div>
   );
 }

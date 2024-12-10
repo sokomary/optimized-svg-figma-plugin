@@ -37,6 +37,7 @@ export async function buildZipBase64(
 ): Promise<string> {
   try {
     const zip = new JSZip();
+    // todo files with equal names will end as a one file
     svgs.forEach((svg) => zip.file(`${svg.name}.svg`, svg.data));
     return await zip.generateAsync({ type: 'base64' });
   } catch (error) {
@@ -51,4 +52,8 @@ export const createZipLink = (zipData: string) => {
   a.href = dataUrl;
   a.download = 'icons.zip';
   return a;
+};
+
+export const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
