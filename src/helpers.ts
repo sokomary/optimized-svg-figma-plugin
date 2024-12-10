@@ -1,9 +1,12 @@
-import { UiMessage, ParentMessage } from "./types";
+import { UiMessage, ParentMessage } from './types';
 
-export const postUiMessage = ({ type, ...payload }: UiMessage['pluginMessage']) => {
+export const postUiMessage = ({
+  type,
+  ...payload
+}: UiMessage['pluginMessage']) => {
   figma.ui.postMessage({ type, ...payload });
-}
+};
 
 export const postParentMessage = ({ type }: ParentMessage) => {
-  parent.postMessage({ pluginMessage: { type }}, '*');
-}
+  parent.postMessage({ pluginMessage: { type } }, '*');
+};
