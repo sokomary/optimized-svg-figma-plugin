@@ -33,13 +33,10 @@ export const useLogic = () => {
     return () => window.removeEventListener('message', onMessage);
   }, []);
 
-  const cancel = () => postParentMessage({ type: 'cancel' });
-
   const download = () => postParentMessage({ type: 'download-svgs' });
 
   return {
     elements,
-    cancel,
     download,
   };
 };

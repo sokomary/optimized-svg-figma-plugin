@@ -19,5 +19,5 @@ export type Event = {
 };
 
 export type ParentMessage = {
-  type: 'cancel' | 'download-svgs';
+  type: 'download-svgs';
 };
