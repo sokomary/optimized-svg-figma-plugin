@@ -1,0 +1,4 @@
+# Ignore artifacts:
+.idea
+dist
+node_modules

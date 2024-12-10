@@ -1,27 +1,27 @@
-import { optimize } from "svgo/dist/svgo.browser.js";
-import { PLUGINS } from "./config";
-import { buildZipBase64, formatStringSize, getSvgString } from "./utils";
+import { optimize } from 'svgo/dist/svgo.browser.js';
+import { PLUGINS } from './config';
+import { buildZipBase64, formatStringSize, getSvgString } from './utils';
 import { Element, ParentMessage } from './types';
-import { postUiMessage } from "./helpers";
+import { postUiMessage } from './helpers';
 
 let ELEMENTS: Element[] = [];
 
-const enabledPlugins = PLUGINS
-  .filter(p => p.enabledByDefault)
-  .map((plugin) => ({ name: plugin.id }));
+const enabledPlugins = PLUGINS.filter((p) => p.enabledByDefault).map(
+  (plugin) => ({ name: plugin.id })
+);
 
 figma.showUI(__html__, { width: 400, height: 300 });
 
 figma.ui.onmessage = async (message: ParentMessage) => {
   switch (message.type) {
-    case "cancel": {
+    case 'cancel': {
       figma.closePlugin();
       break;
     }
-    case "download-svgs": {
-      figma.notify("SVG downloads initiated");
+    case 'download-svgs': {
+      figma.notify('SVG downloads initiated');
       const zipData = await buildZipBase64(ELEMENTS);
-      postUiMessage({ type: 'download-zip', zipData })
+      postUiMessage({ type: 'download-zip', zipData });
       break;
     }
     default: {
@@ -39,8 +39,12 @@ const onSelection = async () => {
     if (component) {
       await getSvgString(component).then((svgString) => {
         if (svgString) {
-          const result = optimize(svgString, { plugins: enabledPlugins, multipass: true });
-          elements.push({ name: component.name, data: result.data, change: `${formatStringSize(svgString)} -> ${formatStringSize(result.data)}` });
+          const result = optimize(svgString, { plugins: enabledPlugins });
+          elements.push({
+            name: component.name,
+            data: result.data,
+            change: `${formatStringSize(svgString)} -> ${formatStringSize(result.data)}`,
+          });
         }
       });
     }
@@ -49,6 +53,6 @@ const onSelection = async () => {
   ELEMENTS = [];
   elements.forEach((el) => ELEMENTS.push(el));
   postUiMessage({ type: 'selection-changed', elements });
-}
+};
 
 figma.on('selectionchange', onSelection);
