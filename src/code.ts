@@ -6,7 +6,7 @@ const enabledPlugins: Plugin[] = PLUGINS.filter((p) => p.enabledByDefault).map(
   (plugin) => ({ name: plugin.id })
 );
 
-figma.showUI(__html__, { width: 400, height: 725 });
+figma.showUI(__html__, { width: 400, height: 725, themeColors: true });
 
 figma.ui.onmessage = async (message: ParentMessage) => onUiMessage(message);
 

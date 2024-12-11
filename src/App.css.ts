@@ -1,6 +1,8 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 
 export const container = style({
+  color: 'var(--figma-color-text)',
+  backgroundColor: 'var(--figma-color-bg)',
   padding: 5,
   height: 'calc(100% - 10px)',
   fontFamily:

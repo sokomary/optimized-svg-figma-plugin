@@ -13,5 +13,5 @@ export const container = style({
 
 export const note = style({
   fontSize: '14px',
-  color: '#00000080',
+  color: 'var(--figma-color-text-onselected-secondary)',
 });

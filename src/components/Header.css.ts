@@ -19,25 +19,27 @@ export const button = recipe({
     borderRadius: '5px',
     cursor: 'pointer',
     border: 'none',
+    color: 'white',
   },
   variants: {
     kind: {
       primary: {
-        backgroundColor: '#0d99ff',
-        color: 'white',
+        backgroundColor: 'var(--figma-color-bg-brand)',
         selectors: {
           '&:active': {
-            background: '#007be5',
+            background: 'var(--figma-color-bg-brand-pressed)',
+          },
+          '&:hover': {
+            background: 'var(--figma-color-bg-brand-hover)',
           },
         },
       },
       secondary: {
         backgroundColor: 'transparent',
-        color: '#000000e5',
-        border: '1px solid #e6e6e6',
+        border: '1px solid var(--figma-color-text-oncomponent-tertiary)',
         selectors: {
           '&:hover': {
-            background: '#e6e6e6',
+            background: 'var(--figma-color-text-oncomponent-tertiary)',
           },
         },
       },

@@ -6,10 +6,10 @@ export const container = style({
   flexDirection: 'column',
   gap: '4px',
   width: '100%',
-  borderBottom: '1px solid #e6e6e6',
+  borderBottom: `1px solid var(--figma-color-border)`,
 });
 
 export const note = style({
   fontSize: '12px',
-  color: '#008043',
+  color: 'var(--figma-color-bg-success)',
 });
