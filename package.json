@@ -5,37 +5,36 @@
   "main": "code.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "watch": "webpack --mode=development --watch"
+    "watch": "webpack --mode=development --watch",
+    "lint": "tsc --noEmit"
   },
   "author": "",
   "license": "",
   "devDependencies": {
     "@figma/eslint-plugin-figma-plugins": "^1.0.0",
     "@figma/plugin-typings": "^1.123.0",
-    "@types/react": "^16.14.69",
-    "@types/react-dom": "^16.9.25",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "@vanilla-extract/css": "^1.20.0",
     "@vanilla-extract/webpack-plugin": "^2.3.26",
-    "css-loader": "^3.6.0",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^9.1.2",
-    "html-webpack-inline-source-plugin": "0.0.10",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^1.6.2",
-    "prettier": "3.3.3",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "ts-loader": "^6.2.2",
-    "typescript": "^4.9.5",
-    "webpack": "^4.47.0",
-    "webpack-cli": "^3.3.12"
+    "css-loader": "^7.1.4",
+    "html-inline-css-webpack-plugin": "^1.11.2",
+    "html-inline-script-webpack-plugin": "^3.2.1",
+    "html-webpack-plugin": "^5.6.6",
+    "mini-css-extract-plugin": "^2.10.1",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.8.3",
+    "webpack": "5.104.1",
+    "webpack-cli": "^7.0.2"
   },
   "packageManager": "pnpm@9.13.1+sha512.5ac37545851c55ec58521b6c285db6f848f93ca70889beb4145f5b40fe234e4ea4faee4dad12ac5c139e494374c65d9c3a6ec9a25954378fa286a250e68d2f20",
   "dependencies": {
     "@vanilla-extract/recipes": "^0.5.7",
     "jszip": "^3.10.1",
-    "svgo": "^3.3.3"
+    "svgo": "^4.0.1"
   }
 }

@@ -33,7 +33,7 @@ export const formatStringSize = (str: string) =>
   `${(getStringSizeInBytes(str) / ONE_KBITE_IN_BITES).toFixed(2)}kB`;
 
 export async function buildZipBase64(
-  svgs: { data: string; name: string }[]
+  svgs: { data: string; name: string }[],
 ): Promise<string> {
   try {
     const zip = new JSZip();
@@ -54,6 +54,5 @@ export const createZipLink = (zipData: string) => {
   return a;
 };
 
-export const delay = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+export const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

@@ -6,16 +6,16 @@
       "dom"
     ],
     "strict": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/@figma",
-      "./types"
+      "./node_modules/@figma"
     ],
     "outDir": "./dist",
     "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*.ts", "types"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

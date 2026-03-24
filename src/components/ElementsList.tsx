@@ -6,15 +6,13 @@ type Props = {
   elements: Element[];
 };
 
-export const ElementsList = ({ elements }: Props) => {
-  return (
-    <>
-      {elements.map((element, index) => (
-        <div key={index} className={css.container}>
-          <div>{element.name}</div>
-          <div className={css.note}>{element.change}</div>
-        </div>
-      ))}
-    </>
-  );
-};
+export const ElementsList = ({ elements }: Props) => (
+  <>
+    {elements.map((element, index) => (
+      <div key={index} className={css.container}>
+        <div>{element.name}</div>
+        <div className={css.note}>{element.change}</div>
+      </div>
+    ))}
+  </>
+);

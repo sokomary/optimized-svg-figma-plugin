@@ -220,4 +220,4 @@ export const PLUGINS = [
     name: 'Remove out-of-bounds paths',
     enabledByDefault: false,
   },
-];
+] as const;

@@ -1,6 +1,7 @@
-import { UiMessage, ParentMessage, Element, Plugin } from './types';
+import { UiMessage, ParentMessage, Element } from './types';
 import { buildZipBase64, delay, formatStringSize, getSvgString } from './utils';
-import { optimize } from 'svgo/dist/svgo.browser.js';
+// import { optimize } from 'svgo/dist/svgo.browser.js';
+import { optimize, PluginConfig } from 'svgo/browser';
 
 export const postUiMessage = ({
   type,
@@ -15,7 +16,7 @@ export const postParentMessage = ({ type, ...payload }: ParentMessage) => {
 
 export const processSelectedNodes = async (
   selection: readonly SceneNode[],
-  plugins: Plugin[]
+  plugins: PluginConfig[],
 ) => {
   const elements: Element[] = [];
   for (const node of selection) {
@@ -58,13 +59,15 @@ export const onUiMessage = async (message: ParentMessage) => {
   }
 };
 
-export const onSelectionChanged = async (svgOptimisationPlugins: Plugin[]) => {
+export const onSelectionChanged = async (
+  svgOptimisationPlugins: PluginConfig[],
+) => {
   postUiMessage({ type: 'optimization-started' });
   await waitForUiToGetMessage();
   const selection = figma.currentPage.selection;
   const elements = await processSelectedNodes(
     selection,
-    svgOptimisationPlugins
+    svgOptimisationPlugins,
   );
   postUiMessage({ type: 'selection-changed', elements });
 };

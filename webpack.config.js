@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
+const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
+const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -15,9 +16,15 @@ module.exports = (env, argv) => ({
         rules: [
             {
                 test: /\.(ts|js|tsx?)$/,
+                exclude(filePath) {
+                    if (/[/\\]node_modules[/\\]/.test(filePath)) {
+                        return !/[/\\](svgo|css-tree)[/\\]/.test(filePath);
+                    }
+                    return false;
+                },
                 use: [{
                     loader: 'ts-loader',
-                    options: { transpileOnly: true }
+                    options: { transpileOnly: true, allowTsInNodeModules: true }
                 }]
             },
             {
@@ -33,16 +40,24 @@ module.exports = (env, argv) => ({
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
+        environment: {
+            arrowFunction: false,
+            optionalChaining: false,
+            templateLiteral: false,
+        },
     },
+    target: ['web', 'es5'],
     // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/ui.html',
             filename: 'ui.html',
-            inlineSource: '.(js|css)$',
             chunks: ['ui'],
+            inject: 'body',
+            scriptLoading: 'blocking',
         }),
-        new HtmlWebpackInlineSourcePlugin(),
+        new HtmlInlineScriptPlugin(),
+        new HTMLInlineCSSWebpackPlugin(),
         new VanillaExtractPlugin(),
         new MiniCssExtractPlugin()
     ]
