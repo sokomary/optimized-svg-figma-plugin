@@ -6,6 +6,8 @@
   "ui": "dist/ui.html",
   "editorType": [
     "figma",
-    "figjam"
-  ]
+    "figjam",
+    "dev"
+  ],
+  "capabilities": ["inspect"]
 }
